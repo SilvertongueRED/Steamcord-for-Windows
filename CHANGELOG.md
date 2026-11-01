@@ -1,5 +1,47 @@
 # Changelog
 
+## 1.43.0 — 2026-11-01
+
+### Added
+
+- **Windows support (Steam Big Picture).** The same release zip now also runs on
+  Windows 10 / 11 with [Decky Loader for Windows](https://github.com/musika08/decky-loader-windows)
+  3.3+. Voice chat, DMs, servers and text chat, QR login, notifications, the soundboard,
+  Rich Presence and per-user volume work in the Quick Access Menu, driven by Vesktop as
+  on the Deck. See [docs/WINDOWS.md](docs/WINDOWS.md).
+- **Vesktop on Windows is installed and managed for you** — `winget` or the official
+  silent per-user installer, started minimised on its own profile per Steam account, and
+  stopped without ever touching a Vesktop you run yourself.
+- **Go Live on Windows** through Electron's own desktop capture (primary display, video only).
+- `Plugin.get_platform_caps` and `src/platform.ts`: the QAM hides the controls a platform
+  cannot support (PipeWire audio routing, game-audio share, chat mix, virtual camera,
+  overlays, the evdev controller shortcut, keep-awake).
+
+### Changed
+
+- Linux-only callables answer with harmless "not supported" values on Windows instead of
+  shelling out to `pactl`, `pw-dump`, `gamescopectl` or evdev.
+- The local helper server listens on `127.0.0.1` only on Windows (no firewall prompt).
+- The in-plugin update check follows this fork's releases, so an upstream Linux-only build
+  cannot replace the Windows-capable one.
+- Small settings files live in Decky's settings folder on Windows; on Linux they stay in `~/.config`.
+
+### Steam Deck / Linux
+
+No behaviour change: every Linux path is kept and the existing tests all pass.
+This release adds top-level files, so install it with *Install from URL* / *ZIP* rather
+than the automatic update.
+
+### Tests and CI
+
+- `tests/test_windows_support.py` (platform layer, Windows Vesktop helpers, dispatch guards,
+  frontend/backend flag parity) with real-Windows cases run on a `windows-latest` job.
+- `tests/check_release_zip.py` fails a release whose zip lacks the Steam Deck files or the
+  Windows layer.
+
+**Full changelog:** [v1.42.6...v1.43.0](https://github.com/SilvertongueRED/Steamcord-for-Windows/compare/v1.42.6...v1.43.0)
+
+
 ## 1.42.6 — 2026-11-01
 
 ### Improved
