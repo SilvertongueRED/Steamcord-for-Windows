@@ -66,7 +66,7 @@ def _parse_version(v: str) -> tuple:
 def get_current_version() -> str:
     # The installed version lives in package.json (plugin.json has no version field).
     try:
-        data = json.loads((Path(DECKY_PLUGIN_DIR) / "package.json").read_text())
+        data = json.loads((Path(DECKY_PLUGIN_DIR) / "package.json").read_text(encoding="utf-8"))
         return str(data.get("version", "0.0.0"))
     except Exception as e:
         logger.warning(f"[updater] cannot read current version: {e}")
@@ -79,7 +79,7 @@ def is_autoupdate_enabled() -> bool:
     # seul au démarrage ferait surgir une modale non sollicitée — on se contente
     # de notifier, et l'utilisateur active l'auto-update s'il le veut.
     try:
-        return bool(json.loads(SETTINGS_FILE.read_text()).get("autoupdate", False))
+        return bool(json.loads(SETTINGS_FILE.read_text(encoding="utf-8")).get("autoupdate", False))
     except Exception:
         return False  # default OFF
 
@@ -87,7 +87,7 @@ def is_autoupdate_enabled() -> bool:
 def set_autoupdate_enabled(enabled: bool) -> bool:
     try:
         SETTINGS_DIR.mkdir(parents=True, exist_ok=True)
-        SETTINGS_FILE.write_text(json.dumps({"autoupdate": bool(enabled)}))
+        SETTINGS_FILE.write_text(json.dumps({"autoupdate": bool(enabled)}), encoding="utf-8")
     except Exception as e:
         logger.warning(f"[updater] cannot persist autoupdate flag: {e}")
     return bool(enabled)

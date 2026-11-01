@@ -103,7 +103,7 @@ def proc_pids(comm=None, cmdline=None):
             continue
         try:
             if comm_rx is not None:
-                with open(f"/proc/{pid}/comm") as f:
+                with open(f"/proc/{pid}/comm", encoding="utf-8") as f:
                     # comm is truncated to 15 chars by the kernel; every name we
                     # match on (gamescope, kwin_wayland, vesktop) is shorter.
                     if not comm_rx.fullmatch(f.read().strip()):
@@ -211,7 +211,7 @@ def steam_account_id():
         return _win.steam_account_id()
     autologin_name = ""
     try:
-        reg = (Path.home() / ".steam/registry.vdf").read_text(errors="ignore")
+        reg = (Path.home() / ".steam/registry.vdf").read_text(errors="ignore", encoding="utf-8")
         m = re.search(r'"ActiveUser"\s+"(\d+)"', reg)
         if m and m.group(1) != "0":
             return m.group(1)
@@ -223,7 +223,7 @@ def steam_account_id():
     for root in _STEAM_ROOTS:
         p = Path(os.path.expanduser(root)) / "config/loginusers.vdf"
         try:
-            data = p.read_text(errors="ignore")
+            data = p.read_text(errors="ignore", encoding="utf-8")
         except OSError:
             continue
         by_name = by_flag = by_time = None
@@ -290,7 +290,7 @@ def _recorded_account():
     if IS_WINDOWS:
         return _win.recorded_account()
     try:
-        return json.loads(_current_file().read_text()).get("account", "")
+        return json.loads(_current_file().read_text(encoding="utf-8")).get("account", "")
     except Exception:
         return ""
 
@@ -300,7 +300,7 @@ def _record_account(account):
         return _win.record_account(account)
     try:
         _profiles_dir().mkdir(parents=True, exist_ok=True)
-        _current_file().write_text(json.dumps({"account": account}))
+        _current_file().write_text(json.dumps({"account": account}), encoding="utf-8")
     except OSError as e:
         logger.warning(f"[multisession] cannot record account: {e!r}")
 
@@ -506,7 +506,7 @@ def _steam_display_env():
     # on retombe alors sur les processus « steam » de notre uid.
     pids = []
     try:
-        pids.append(Path(os.path.expanduser("~/.steampid")).read_text().strip())
+        pids.append(Path(os.path.expanduser("~/.steampid")).read_text(encoding="utf-8").strip())
     except Exception:
         pass
     pids += _steam_pids()
@@ -532,7 +532,7 @@ def _steam_pids():
         if not p.name.isdigit():
             continue
         try:
-            if p.stat().st_uid != uid or (p / "comm").read_text().strip() != "steam":
+            if p.stat().st_uid != uid or (p / "comm").read_text(encoding="utf-8").strip() != "steam":
                 continue
             found.append((p.stat().st_mtime, p.name))
         except Exception:
@@ -971,7 +971,7 @@ def release_portal_sessions(tag="[portal]"):
     rt = os.environ.get("XDG_RUNTIME_DIR") or f"/run/user/{os.getuid()}"
     pidfile = os.path.join(rt, "steamcord-portal-shim.pid")
     try:
-        with open(pidfile) as f:
+        with open(pidfile, encoding="utf-8") as f:
             pid = int(f.read().strip())
     except Exception:
         return False                # pas de shim (mode bureau) : rien à libérer

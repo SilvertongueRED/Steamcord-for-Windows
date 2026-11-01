@@ -157,7 +157,7 @@ async def _initialize_discord():
     _cjs = Path(DECKY_PLUGIN_DIR) / "defaults" / "steamcord_client.js"
     if not _cjs.exists():
         _cjs = Path(DECKY_PLUGIN_DIR) / "steamcord_client.js"
-    client_js = open(_cjs, "r").read()
+    client_js = open(_cjs, "r", encoding="utf-8").read()
     # webrtc_client.js surcharge getDisplayMedia → capture d'écran GStreamer pour
     # le partage d'écran (Go Live). DOIT être injecté sous Vesktop aussi, sinon le
     # partage d'écran « ne donne rien » (getDisplayMedia natif inutilisable headless).
@@ -165,7 +165,7 @@ async def _initialize_discord():
         _wjs = Path(DECKY_PLUGIN_DIR) / "defaults" / "webrtc_client.js"
         if not _wjs.exists():
             _wjs = Path(DECKY_PLUGIN_DIR) / "webrtc_client.js"
-        webrtc_js = open(_wjs, "r").read()
+        webrtc_js = open(_wjs, "r", encoding="utf-8").read()
     except Exception:
         webrtc_js = ""
     # Host marker, read by webrtc_client.js: on Windows Go Live uses Electron's own
@@ -1347,7 +1347,7 @@ class Plugin:
     async def get_open_view(cls):
         from json import load as _load
         try:
-            with open(cls._VIEW_CFG) as f:
+            with open(cls._VIEW_CFG, encoding="utf-8") as f:
                 cfg = _load(f)
             if not isinstance(cfg, dict):
                 cfg = {}
@@ -1386,7 +1386,7 @@ class Plugin:
         tmp = cls._VIEW_CFG + ".tmp"
         try:
             os.makedirs(os.path.dirname(cls._VIEW_CFG), exist_ok=True)
-            with open(tmp, "w") as f:
+            with open(tmp, "w", encoding="utf-8") as f:
                 _dump(cfg, f)
             os.replace(tmp, cls._VIEW_CFG)
         except Exception as e:
@@ -1429,7 +1429,7 @@ class Plugin:
         from json import load as _load
         if cls._notify_settings is None:
             try:
-                with open(cls._NOTIFY_CFG) as f:
+                with open(cls._NOTIFY_CFG, encoding="utf-8") as f:
                     cls._notify_settings = _load(f)
             except Exception:
                 cls._notify_settings = {}
@@ -1460,7 +1460,7 @@ class Plugin:
             cfg[key] = val
         try:
             os.makedirs(os.path.dirname(cls._NOTIFY_CFG), exist_ok=True)
-            with open(cls._NOTIFY_CFG, "w") as f:
+            with open(cls._NOTIFY_CFG, "w", encoding="utf-8") as f:
                 _dump(cfg, f)
         except Exception as e:
             logger.warning(f"save {cls._NOTIFY_CFG} failed: {e!r}")
@@ -1632,7 +1632,7 @@ class Plugin:
         from json import load as _load
         if cls._stream_settings is None:
             try:
-                with open(cls._STREAM_CFG) as f:
+                with open(cls._STREAM_CFG, encoding="utf-8") as f:
                     cls._stream_settings = _load(f)
             except Exception:
                 cls._stream_settings = {}
@@ -1690,7 +1690,7 @@ class Plugin:
             cfg["frameRate"] = frameRate
         try:
             os.makedirs(os.path.dirname(cls._STREAM_CFG), exist_ok=True)
-            with open(cls._STREAM_CFG, "w") as f:
+            with open(cls._STREAM_CFG, "w", encoding="utf-8") as f:
                 _dump(cfg, f)
         except Exception as e:
             logger.warning(f"save {cls._STREAM_CFG} failed: {e!r}")
@@ -1869,7 +1869,7 @@ class Plugin:
         from json import load
         cfg = {}
         try:
-            with open(cls._RPC_CFG) as f:
+            with open(cls._RPC_CFG, encoding="utf-8") as f:
                 cfg = load(f) or {}
         except Exception:
             cfg = {}
@@ -1888,7 +1888,7 @@ class Plugin:
         from json import dump
         try:
             os.makedirs(os.path.dirname(cls._RPC_CFG), exist_ok=True)
-            with open(cls._RPC_CFG, "w") as f:
+            with open(cls._RPC_CFG, "w", encoding="utf-8") as f:
                 dump({"enabled": cls._rpc_pref(),
                       "detect_launcher_games": cls._rpc_detect_pref(),
                       "override": cls._rpc_override_pref()}, f)
@@ -1972,7 +1972,7 @@ class Plugin:
         from json import load
         if cls._ka_cache is None:
             try:
-                with open(cls._KA_CFG) as f:
+                with open(cls._KA_CFG, encoding="utf-8") as f:
                     cfg = load(f) or {}
             except Exception:
                 cfg = {}
@@ -1985,7 +1985,7 @@ class Plugin:
         from json import dump
         try:
             os.makedirs(os.path.dirname(cls._KA_CFG), exist_ok=True)
-            with open(cls._KA_CFG, "w") as f:
+            with open(cls._KA_CFG, "w", encoding="utf-8") as f:
                 dump(cls._ka_cfg(), f)
         except Exception as e:
             logger.warning(f"save keepawake cfg failed: {e!r}")
@@ -2441,7 +2441,7 @@ class Plugin:
     def _load_json_list(path, key):
         from json import load
         try:
-            with open(path) as f:
+            with open(path, encoding="utf-8") as f:
                 return list(load(f).get(key, []))
         except Exception:
             return []
@@ -2451,7 +2451,7 @@ class Plugin:
         from json import dump
         try:
             os.makedirs(os.path.dirname(path), exist_ok=True)
-            with open(path, "w") as f:
+            with open(path, "w", encoding="utf-8") as f:
                 dump({key: values}, f)
         except Exception as e:
             logger.warning(f"save {path} failed: {e!r}")
@@ -2994,7 +2994,7 @@ class Plugin:
         import vesktop as _v
         rt = _v._user_env().get("XDG_RUNTIME_DIR") or "/run/user/1000"
         try:
-            with open(os.path.join(rt, "steamcord-portal-shim.pid")) as f:
+            with open(os.path.join(rt, "steamcord-portal-shim.pid"), encoding="utf-8") as f:
                 pid = int(f.read().strip())
             with open(f"/proc/{pid}/cmdline", "rb") as f:
                 if b"portal_shim.py" not in f.read():
@@ -3483,7 +3483,7 @@ class Plugin:
     def _load_audio_cfg(cls):
         from json import load
         try:
-            with open(cls._AUDIO_CFG) as f:
+            with open(cls._AUDIO_CFG, encoding="utf-8") as f:
                 cfg = load(f)
             cls._audio_out = cfg.get("output") or None
             cls._audio_in = cfg.get("input") or None
@@ -3507,7 +3507,7 @@ class Plugin:
         from json import dump
         try:
             os.makedirs(os.path.dirname(cls._AUDIO_CFG), exist_ok=True)
-            with open(cls._AUDIO_CFG, "w") as f:
+            with open(cls._AUDIO_CFG, "w", encoding="utf-8") as f:
                 dump({"output": cls._audio_out, "input": cls._audio_in,
                       "mic": cls._mic_prefs, "ga_vol": cls._ga_vol,
                       "chat_mix": cls._chat_mix,
@@ -3573,7 +3573,7 @@ class Plugin:
             return cls._voice_cache
         from json import load
         try:
-            with open(cls._INPUT_CFG) as f:
+            with open(cls._INPUT_CFG, encoding="utf-8") as f:
                 raw = load(f)
         except Exception:
             raw = None
@@ -3606,7 +3606,7 @@ class Plugin:
             ]
             try:
                 os.makedirs(os.path.dirname(cls._INPUT_CFG), exist_ok=True)
-                with open(cls._INPUT_CFG, "w") as f:
+                with open(cls._INPUT_CFG, "w", encoding="utf-8") as f:
                     dump(merged, f)
             except Exception as e:
                 logger.warning(f"save input cfg failed: {e!r}")
@@ -4562,7 +4562,7 @@ class Plugin:
         # OS effacent les paquets ajoutés → « sudo pacman -S … » y est un faux
         # conseil, on renvoie un code dédié à la place.
         try:
-            with open("/etc/os-release") as f:
+            with open("/etc/os-release", encoding="utf-8") as f:
                 for line in f:
                     if line.strip().startswith("ID="):
                         return line.split("=", 1)[1].strip().strip('"') == "steamos"
@@ -4669,7 +4669,7 @@ class Plugin:
             'echo "Done - screen share is ready."\n')
         try:
             p = Path.home() / cls._FIX_SCRIPT
-            p.write_text(script)
+            p.write_text(script, encoding="utf-8")
             p.chmod(0o755)
             return f"bash ~/{cls._FIX_SCRIPT}"
         except Exception as e:
@@ -4696,7 +4696,7 @@ class Plugin:
             path = os.path.join(v4l, name)
             label = ""
             try:
-                with open(os.path.join(path, "name")) as f:
+                with open(os.path.join(path, "name"), encoding="utf-8") as f:
                     label = f.read().strip()
             except Exception:
                 pass
@@ -5151,7 +5151,7 @@ class Plugin:
     async def get_voice_gamescope_only(cls):
         from json import load as _load
         try:
-            with open(cls._VOICE_ENV_CFG) as f:
+            with open(cls._VOICE_ENV_CFG, encoding="utf-8") as f:
                 cfg = _load(f)
             if isinstance(cfg, dict) and isinstance(cfg.get("gamescope_only"), bool):
                 return {"gamescope_only": cfg["gamescope_only"]}
@@ -5167,7 +5167,7 @@ class Plugin:
     def _voice_env_cfg(cls):
         from json import load as _load
         try:
-            with open(cls._VOICE_ENV_CFG) as f:
+            with open(cls._VOICE_ENV_CFG, encoding="utf-8") as f:
                 cfg = _load(f)
             return cfg if isinstance(cfg, dict) else {}
         except Exception:
@@ -5190,7 +5190,7 @@ class Plugin:
         tmp = cls._VOICE_ENV_CFG + ".tmp"
         try:
             os.makedirs(os.path.dirname(cls._VOICE_ENV_CFG), exist_ok=True)
-            with open(tmp, "w") as f:
+            with open(tmp, "w", encoding="utf-8") as f:
                 _dump(cfg, f)
             os.replace(tmp, cls._VOICE_ENV_CFG)
         except Exception as e:
@@ -5232,7 +5232,7 @@ class Plugin:
             os.makedirs(os.path.dirname(cls._VOICE_ENV_CFG), exist_ok=True)
             cfg = cls._voice_env_cfg()       # garder vesktop_desktop_off (#66)
             cfg["gamescope_only"] = gamescope_only
-            with open(tmp, "w") as f:
+            with open(tmp, "w", encoding="utf-8") as f:
                 _dump(cfg, f)
             os.replace(tmp, cls._VOICE_ENV_CFG)
         except Exception as e:
@@ -5567,7 +5567,7 @@ class Plugin:
         backend = os.environ.get("STEAMCORD_OVERLAY_BACKEND", "").strip()
         if not backend:
             try:
-                backend = (Path.home() / ".config/steamcord-overlay-backend").read_text().strip()
+                backend = (Path.home() / ".config/steamcord-overlay-backend").read_text(encoding="utf-8").strip()
             except OSError:
                 pass
         return ("--backend", backend) if backend in ("cairo", "webkit") else ()
@@ -5602,7 +5602,7 @@ class Plugin:
         import json as _json
         if cls._overlay_settings is None:
             try:
-                with open(cls._OVERLAY_CFG) as f:
+                with open(cls._OVERLAY_CFG, encoding="utf-8") as f:
                     cls._overlay_settings = _json.load(f)
             except Exception:
                 cls._overlay_settings = {}
@@ -5616,7 +5616,7 @@ class Plugin:
     def _save_overlay_settings(cls):
         import json as _json
         try:
-            with open(cls._OVERLAY_CFG, "w") as f:
+            with open(cls._OVERLAY_CFG, "w", encoding="utf-8") as f:
                 _json.dump(cls._load_overlay_settings(), f)
         except Exception as e:
             logger.warning(f"[overlay] save settings failed: {e!r}")
@@ -5684,7 +5684,7 @@ class Plugin:
             d = cls._overlay_dir()
             os.makedirs(d, exist_ok=True)
             tmp = os.path.join(d, ".voice_state.tmp")
-            with open(tmp, "w") as f:
+            with open(tmp, "w", encoding="utf-8") as f:
                 _json.dump(payload, f)
             os.replace(tmp, os.path.join(d, "voice_state.json"))
         except Exception as e:

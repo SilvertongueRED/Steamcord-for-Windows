@@ -1,4 +1,6 @@
-## Steamcord 1.43.0 - Windows Big Picture support, same zip as the Steam Deck
+## Steamcord 1.43.1 - Windows Big Picture support, same zip as the Steam Deck
+
+**1.43.1 fixes a start-up bug on Windows.** In 1.43.0 the panel stayed on "Initializing" because Windows read Steamcord's UTF-8 files with the legacy code page and failed on startup, so Vesktop was never launched. All text file access now uses UTF-8, and a test guards against it coming back. The Steam Deck is unaffected. If you installed 1.43.0, install this one over it.
 
 **One release, two hosts.** `Steamcord-for-Windows.zip` now runs on the Steam Deck
 (Decky Loader, Gaming Mode) **and** on Windows (Decky Loader for Windows, Steam Big

@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.43.1 - 2026-11-01
+
+### Fixed
+
+- **Windows: stuck on "Initializing".** On Windows, Python opens text files with the legacy
+  ANSI code page unless told otherwise, and Steamcord's JavaScript client and settings files
+  are UTF-8. Starting the Discord client failed with a `UnicodeDecodeError` ("charmap") and
+  retried forever, so Vesktop was never launched. Every text file read and write now names
+  UTF-8. The Steam Deck is unaffected (it already defaulted to UTF-8).
+- A test now fails the build if any text-mode `open`, `read_text` or `write_text` is added
+  without an explicit encoding.
+
+**Full changelog:** [v1.43.0...v1.43.1](https://github.com/SilvertongueRED/Steamcord-for-Windows/compare/v1.43.0...v1.43.1)
+
+
 ## 1.43.0 - 2026-11-01
 
 ### Added

@@ -264,6 +264,52 @@ class MainGuardsTest(unittest.TestCase):
         self.assertIn('"127.0.0.1" if IS_WINDOWS else "0.0.0.0"', self.src)
 
 
+class TextEncodingTest(unittest.TestCase):
+    """On Windows, Python opens text files with the legacy ANSI code page unless told
+    otherwise, and Steamcord's own JavaScript and settings files are UTF-8. The first
+    Windows run died on exactly this (UnicodeDecodeError 'charmap' while reading
+    steamcord_client.js), so every text-mode open / read_text / write_text must name
+    its encoding."""
+
+    SKIP = ("gst_camera.py", "gst_webrtc.py", "portal_shim.py", "input_watch.py")
+
+    def _files(self):
+        out = [ROOT / "main.py"]
+        for path in sorted(DEFAULTS.rglob("*.py")):
+            if path.name in self.SKIP or "game_overlay" in path.parts:
+                continue
+            out.append(path)
+        return out
+
+    @staticmethod
+    def _binary_mode(call):
+        mode = None
+        if len(call.args) > 1 and isinstance(call.args[1], ast.Constant):
+            mode = call.args[1].value
+        for kw in call.keywords:
+            if kw.arg == "mode" and isinstance(kw.value, ast.Constant):
+                mode = kw.value.value
+        return isinstance(mode, str) and "b" in mode
+
+    def test_every_text_file_access_names_its_encoding(self):
+        offenders = []
+        for path in self._files():
+            tree = ast.parse(path.read_text(encoding="utf-8"))
+            for node in ast.walk(tree):
+                if not isinstance(node, ast.Call):
+                    continue
+                fn = node.func
+                is_open = isinstance(fn, ast.Name) and fn.id == "open"
+                is_text_io = isinstance(fn, ast.Attribute) and fn.attr in ("read_text", "write_text")
+                if not (is_open or is_text_io):
+                    continue
+                if is_open and self._binary_mode(node):
+                    continue
+                if not any(kw.arg == "encoding" for kw in node.keywords):
+                    offenders.append(f"{path.relative_to(ROOT)}:{node.lineno}")
+        self.assertEqual(offenders, [], "text-mode file access without encoding= (breaks on Windows)")
+
+
 @unittest.skipUnless(sys.platform == "win32", "needs a real Windows host")
 class RealWindowsTest(unittest.TestCase):
     def test_process_table_contains_this_python(self):

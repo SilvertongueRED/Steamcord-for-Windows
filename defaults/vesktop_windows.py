@@ -237,7 +237,7 @@ def steam_account_id():
     root = plat.steam_root()
     if root:
         try:
-            data = Path(root, "config", "loginusers.vdf").read_text(errors="ignore")
+            data = Path(root, "config", "loginusers.vdf").read_text(errors="ignore", encoding="utf-8")
         except OSError:
             data = ""
         by_flag = by_time = None
@@ -266,7 +266,7 @@ def _current_file():
 
 def recorded_account():
     try:
-        return json.loads(_current_file().read_text()).get("account", "")
+        return json.loads(_current_file().read_text(encoding="utf-8")).get("account", "")
     except Exception:
         return ""
 
@@ -274,7 +274,7 @@ def recorded_account():
 def record_account(account):
     try:
         profiles_dir().mkdir(parents=True, exist_ok=True)
-        _current_file().write_text(json.dumps({"account": account}))
+        _current_file().write_text(json.dumps({"account": account}), encoding="utf-8")
     except OSError as e:
         logger.warning(f"[multisession] cannot record account: {e!r}")
 
@@ -299,14 +299,14 @@ def _pidfile():
 
 def _read_pidfile():
     try:
-        return int(Path(_pidfile()).read_text().strip())
+        return int(Path(_pidfile()).read_text(encoding="utf-8").strip())
     except (OSError, ValueError):
         return 0
 
 
 def _write_pidfile(pid):
     try:
-        Path(_pidfile()).write_text(str(pid))
+        Path(_pidfile()).write_text(str(pid), encoding="utf-8")
     except OSError:
         pass
 
