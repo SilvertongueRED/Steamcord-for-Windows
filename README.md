@@ -9,7 +9,7 @@ v1.41.4: Private conversations refresh automatically and follow the latest sent/
 **Discord in Steam Gaming Mode** — a [Decky Loader](https://github.com/SteamDeckHomebrew/decky-loader) plugin for Steam Deck / Bazzite / SteamOS.
 
 > ### 🪟 New: Windows (Steam Big Picture)
-> **One zip, two hosts.** Since **1.43.0** the same release also runs on **Windows 10 / 11** inside Steam **Big Picture**, with [Decky Loader for Windows](https://github.com/musika08/decky-loader-windows) (3.3+). Steamcord detects the host by itself — the Steam Deck build is unchanged. Voice, DMs, text chat, QR login, notifications, the soundboard and Go Live (video) work on Windows; PipeWire-only extras (game-audio share, audio routing, virtual camera, overlays, controller shortcut) are Steam Deck / Linux only and are hidden on Windows. Read [docs/WINDOWS.md](docs/WINDOWS.md). *The Windows port is new — please report what you find.*
+> **One zip, two hosts.** Since **1.43.0** the same release also runs on **Windows 10 / 11** inside Steam **Big Picture**, with [Decky Loader for Windows](https://github.com/musika08/decky-loader-windows) (3.3+). Steamcord detects the host by itself - the Steam Deck build is unchanged. Voice, DMs, text chat, QR login, notifications, the soundboard and Go Live (video) are built for Windows (first release, not yet confirmed on real hardware); PipeWire-only extras (game-audio share, audio routing, virtual camera, overlays, controller shortcut) are Steam Deck / Linux only and are hidden on Windows. Read [docs/WINDOWS.md](docs/WINDOWS.md). *The Windows port is new - please report what you find.*
 
 Voice chat, private messages and screen sharing from the Quick Access Menu, without leaving Game Mode and without a second device.
 
@@ -113,7 +113,7 @@ Vesktop is installed and launched automatically by the plugin the first time it 
 
 ### Windows
 
-1. Install **[Decky Loader for Windows](https://github.com/musika08/decky-loader-windows)** (3.3 or newer) and restart Steam once — it turns on Steam's remote debugging.
+1. Install **[Decky Loader for Windows](https://github.com/musika08/decky-loader-windows)** (3.3 or newer) and restart Steam once - it turns on Steam's remote debugging.
 2. Open Steam in **Big Picture**, then follow the three install steps above in the Decky tab.
 3. Open Steamcord: the first start installs **Vesktop** for your user (`winget`, or the official installer, silently), then shows the QR code to scan with the Discord mobile app.
 

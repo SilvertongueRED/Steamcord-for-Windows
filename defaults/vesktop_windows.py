@@ -1,7 +1,7 @@
 """Windows backend of the Vesktop manager (the Linux one lives in vesktop.py).
 
-Same idea as on Linux — run a real Vesktop invisibly, drive it over the Chrome
-DevTools Protocol, inject our client — with the Windows way of doing each step:
+Same idea as on Linux - run a real Vesktop invisibly, drive it over the Chrome
+DevTools Protocol, inject our client - with the Windows way of doing each step:
 
 * Vesktop comes from winget (`Vencord.Vesktop`) or the official GitHub installer,
   installed per-user and silently, so no administrator prompt is needed;
@@ -214,7 +214,7 @@ async def install():
                 return
         except Exception as e:
             logger.warning(f"[win-install] {attempt.__name__}: {e!r}")
-    logger.warning("[win-install] Vesktop could not be installed automatically — install it "
+    logger.warning("[win-install] Vesktop could not be installed automatically - install it "
                    "from https://vesktop.dev or run: winget install Vencord.Vesktop")
 
 
@@ -223,7 +223,7 @@ def steam_account_id():
     """32-bit AccountID (string) of the Steam user that is signed in, else "default".
 
     Registry first (Steam publishes the active user there while it runs), then
-    loginusers.vdf — most recent / auto-login — the same fallbacks as Linux."""
+    loginusers.vdf - most recent / auto-login - the same fallbacks as Linux."""
     if plat.IS_WINDOWS:
         try:
             import winreg
@@ -328,7 +328,7 @@ def _is_vesktop_pid(pid):
 
 
 def pid_listening(port=CDP_PORT):
-    """PID that listens on 127.0.0.1:<port>, from `netstat -ano` — present on
+    """PID that listens on 127.0.0.1:<port>, from `netstat -ano` - present on
     every Windows. 0 when nobody does."""
     try:
         out = _run_hidden(["netstat", "-ano", "-p", "tcp"], 10).stdout.decode("utf-8", "replace")
@@ -386,7 +386,7 @@ def launch_args(profile):
         f"--remote-debugging-port={CDP_PORT}",
         "--remote-allow-origins=*",
         f"--user-data-dir={profile['electron']}",
-        # keeps the JS timers — and so Discord's gateway heartbeat — running
+        # keeps the JS timers - and so Discord's gateway heartbeat - running
         # while the window is minimised
         "--disable-background-timer-throttling",
         "--start-minimized",
@@ -427,7 +427,7 @@ async def launch(is_up):
     (passed in to avoid an import cycle). True once the port answers."""
     exe = find_exe()
     if not exe:
-        logger.warning("[win] Vesktop.exe not found — install it (winget install Vencord.Vesktop)")
+        logger.warning("[win] Vesktop.exe not found - install it (winget install Vencord.Vesktop)")
         return False
     account = steam_account_id()
     if is_running():
@@ -435,7 +435,7 @@ async def launch(is_up):
             return True
         if recorded_account() != account:
             logger.info(f"[multisession] Steam account changed "
-                        f"({recorded_account() or '?'} → {account}) — switching Discord profile")
+                        f"({recorded_account() or '?'} → {account}) - switching Discord profile")
             await kill("[multisession]")
         else:
             # ours, but the port never opened (hung): wait a little, then relaunch

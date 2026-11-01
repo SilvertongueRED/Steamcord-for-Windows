@@ -352,7 +352,7 @@ async def apply(url: str) -> dict:
         logger.error(f"[updater] apply failed: {e} | {_diagnose_permission(Path(blocked_path))}")
         if sys.platform == "win32":
             return {"ok": False,
-                    "error": f"Permission denied on {blocked_path} — Decky for Windows keeps "
+                    "error": f"Permission denied on {blocked_path} - Decky for Windows keeps "
                              "installed plugins in a folder this plugin cannot write to. Install the "
                              "new zip instead: Decky → Settings → Developer → Install Plugin from "
                              "ZIP File."}

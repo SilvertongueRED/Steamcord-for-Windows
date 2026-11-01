@@ -832,7 +832,7 @@ class Plugin:
             logger.info("[win] Windows host: GStreamer relay and portal shim not started")
         else:
             # Use the SYSTEM GStreamer (1.26+). The original Deckcord bundled GStreamer in
-            # bin/, but this fork never shipped it — pointing at a nonexistent bin/ broke the
+            # bin/, but this fork never shipped it - pointing at a nonexistent bin/ broke the
             # subprocess silently. Inherit the user environment so PATH/HOME/typelibs
             # resolve, and only override what's needed for hw encode + pipewire/pulse access.
             # Le plugin GStreamer `nice` (ICE, requis par webrtcbin) n'est PAS dans l'image
@@ -860,7 +860,7 @@ class Plugin:
             # variables et chargeait le libcrypto du bundle → « OPENSSL_3.4.0 not found »,
             # donc pas de pipeline et un Go Live sans image (invisible sur Bazzite, dont
             # les libs système sont compatibles ; fatal sur SteamOS). _user_env() fait
-            # déjà ce nettoyage — le shim s'en servait, ce lancement-ci l'avait manqué.
+            # déjà ce nettoyage - le shim s'en servait, ce lancement-ci l'avait manqué.
             # Il dérive aussi XDG_RUNTIME_DIR/DBUS du vrai uid, ce que os.environ.get
             # ne garantissait pas (le backend hérite du /run/user/0 de plugin_loader).
             import vesktop as _vesktop
@@ -895,7 +895,7 @@ class Plugin:
             # Portail ScreenCast pour gamescope (portal_shim.py) : rend le Go Live
             # NATIF fonctionnel en mode jeu (getDisplayMedia → notre portail → node
             # PipeWire gamescope), sans caméra virtuelle ni relais WebRTC local.
-            # Tourne sous le python SYSTÈME (pas de gi requis — dbus_next est
+            # Tourne sous le python SYSTÈME (pas de gi requis - dbus_next est
             # vendoré dans py_modules, passé via PYTHONPATH).
             try:
                 vesktop.proc_kill("portal_shim.py")
@@ -928,7 +928,7 @@ class Plugin:
             create_task(cls._ga_boot_cleanup())
         create_task(cls._account_watcher())
         if not IS_WINDOWS:
-            # Lecteur clavier/souris du raccourci vocal — no-op tant qu'aucun binding
+            # Lecteur clavier/souris du raccourci vocal - no-op tant qu'aucun binding
             # clavier/souris n'existe (aucun fd ouvert, donc rien à payer).
             create_task(cls._input_refresh())
             create_task(cls._input_watchdog())

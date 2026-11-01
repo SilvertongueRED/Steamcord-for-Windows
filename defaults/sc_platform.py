@@ -8,7 +8,7 @@ of sprinkling `sys.platform` checks around.
 Detection is `sys.platform`, NEVER `os.getuid()`: Decky for Windows emulates
 `os.getuid()` (it returns 0 or 1000), so it says nothing about the host.
 
-This file is named `sc_platform` on purpose — a `platform.py` next to main.py
+This file is named `sc_platform` on purpose - a `platform.py` next to main.py
 would shadow the standard library module of the same name.
 """
 
@@ -59,7 +59,7 @@ def capabilities():
 def config_dir():
     """Where Steamcord's small JSON settings files live.
 
-    Linux keeps `~/.config` (the historical location — existing settings must
+    Linux keeps `~/.config` (the historical location - existing settings must
     keep working after an update). Windows uses the plugin settings directory
     Decky provides, so settings survive a plugin reinstall; outside Decky it
     falls back to %APPDATA%\\steamcord.

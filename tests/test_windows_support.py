@@ -189,7 +189,7 @@ class VesktopWindowsTest(unittest.TestCase):
 
 
 class VesktopDispatchTest(unittest.TestCase):
-    """vesktop.py must hand over to the Windows module — and must never match or
+    """vesktop.py must hand over to the Windows module - and must never match or
     signal processes by command line there (a bare name match would hit Decky)."""
 
     @classmethod

@@ -1,15 +1,15 @@
 # Changelog
 
-## 1.43.0 — 2026-11-01
+## 1.43.0 - 2026-11-01
 
 ### Added
 
 - **Windows support (Steam Big Picture).** The same release zip now also runs on
   Windows 10 / 11 with [Decky Loader for Windows](https://github.com/musika08/decky-loader-windows)
   3.3+. Voice chat, DMs, servers and text chat, QR login, notifications, the soundboard,
-  Rich Presence and per-user volume work in the Quick Access Menu, driven by Vesktop as
-  on the Deck. See [docs/WINDOWS.md](docs/WINDOWS.md).
-- **Vesktop on Windows is installed and managed for you** — `winget` or the official
+  Rich Presence and per-user volume are supported in the Quick Access Menu, driven by Vesktop as
+  on the Deck. First release of the Windows port: built and unit-tested, not yet confirmed on real hardware. See [docs/WINDOWS.md](docs/WINDOWS.md).
+- **Vesktop on Windows is installed and managed for you** - `winget` or the official
   silent per-user installer, started minimised on its own profile per Steam account, and
   stopped without ever touching a Vesktop you run yourself.
 - **Go Live on Windows** through Electron's own desktop capture (primary display, video only).

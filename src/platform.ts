@@ -3,8 +3,8 @@
 // One Steamcord zip runs on the Steam Deck (Linux) and in Steam Big Picture on
 // Windows (Decky Loader for Windows). The backend knows which one it is on and
 // which features exist there (`get_platform_caps`, backed by sc_platform.py);
-// this module mirrors that for the UI so controls that cannot work — PipeWire audio
-// routing, the virtual camera, the GTK overlay, evdev shortcuts — are not offered.
+// this module mirrors that for the UI so controls that cannot work - PipeWire audio
+// routing, the virtual camera, the GTK overlay, evdev shortcuts - are not offered.
 //
 // The answer is needed synchronously during render, so it starts from a guess
 // taken from the user agent (Steam's CEF reports "Windows" on Windows) and is

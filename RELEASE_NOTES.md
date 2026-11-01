@@ -1,18 +1,19 @@
-## Steamcord 1.43.0 — Windows Big Picture support, same zip as the Steam Deck
+## Steamcord 1.43.0 - Windows Big Picture support, same zip as the Steam Deck
 
 **One release, two hosts.** `Steamcord-for-Windows.zip` now runs on the Steam Deck
 (Decky Loader, Gaming Mode) **and** on Windows (Decky Loader for Windows, Steam Big
-Picture). The plugin detects the host when it starts — nothing to choose, nothing to
+Picture). The plugin detects the host when it starts - nothing to choose, nothing to
 configure.
 
 ### New: Windows
 
 - **Discord in Steam Big Picture on Windows 10 / 11.** Voice chat, DMs and group DMs,
   servers and text chat, QR login and the CAPTCHA solver, Steam-toast notifications,
-  soundboard, Rich Presence and per-user volume work in the Quick Access Menu, driven by
-  a real Vesktop just like on the Deck.
+  soundboard, Rich Presence and per-user volume are supported in the Quick Access Menu, driven by
+  a real Vesktop just like on the Deck. **These are built and unit-tested but not yet confirmed on real
+  Windows hardware.**
 - **Vesktop is installed for you** (winget, or the official installer, silently and
-  per-user — no administrator prompt) and started minimised on its own profile. A
+  per-user - no administrator prompt) and started minimised on its own profile. A
   Vesktop you already use on the desktop is never touched.
 - **One Discord per Steam account** on Windows too, with the same automatic switching.
 - **Go Live on Windows** shares the primary display through Electron's own screen
@@ -46,7 +47,7 @@ controller push-to-talk, no keep-awake. Details and troubleshooting:
 ### Upgrading
 
 - This release adds files at the plugin's top level (`sc_platform.py`,
-  `vesktop_windows.py`), so install it the normal way (URL or ZIP above) — the built-in
+  `vesktop_windows.py`), so install it the normal way (URL or ZIP above) - the built-in
   updater can overwrite files but not create new ones.
 - The in-plugin update check now follows **this fork's** releases instead of the
   upstream Steamcord ones, so an upstream Linux-only build can no longer replace the

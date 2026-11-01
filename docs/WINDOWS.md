@@ -11,8 +11,8 @@ There is one release and one zip. The plugin notices which host it is on when it
 starts; nothing needs to be chosen or configured.
 
 > **Status: new and experimental.** The Windows side is the first release of
-> this port. It is covered by automated tests (including a Windows CI run), but
-> it has had little time on real handhelds — please report what you find.
+> this port. It has automated tests (including a Windows CI job), but it has not
+> been run on a real Windows handheld by its author. Please report what you find.
 
 ## Requirements
 
@@ -29,13 +29,13 @@ starts; nothing needs to be chosen or configured.
 2. Turn on **Developer Mode** (General tab).
 3. In the **Developer** tab choose **Install Plugin from URL** and use
    `https://github.com/SilvertongueRED/Steamcord-for-Windows/releases/latest/download/Steamcord-for-Windows.zip`
-   — or download the zip and pick **Install Plugin from ZIP File**.
+   - or download the zip and pick **Install Plugin from ZIP File**.
 4. Confirm the *third-party plugin* warning (the plugin is not on the Decky Store).
 5. Open Steamcord from the Decky tab. The first start installs Vesktop (about a
    minute), then shows the **QR code**: scan it with the Discord mobile app
    (*Settings → Scan QR Code*).
 
-The Steam Deck steps are unchanged — see the main [README](../README.md#installation).
+The Steam Deck steps are unchanged - see the main [README](../README.md#installation).
 
 ## How it works on Windows
 
@@ -59,7 +59,9 @@ how Vesktop is found, started and stopped:
 - **Local server.** The plugin's helper server listens on `127.0.0.1` only on Windows,
   so Windows Firewall does not ask for permission.
 
-## What works
+## What is included
+
+This table shows what the Windows build is designed to do. **None of it has been confirmed on a real Windows handheld yet**, so treat every tick as "expected" until you have tried it.
 
 | Feature | Windows | Steam Deck |
 |---|:-:|:-:|
@@ -72,12 +74,12 @@ how Vesktop is found, started and stopped:
 | One Discord profile per Steam account | ✅ | ✅ |
 | Go Live (screen share) | ✅ primary display, video only | ✅ with game audio |
 | Send Steam screenshots and clips | ✅ (clips need `ffmpeg`) | ✅ |
-| Game audio in the call, game ↔ Discord mix | — | ✅ |
-| Choosing audio output / input inside the plugin | — (uses the Windows default devices) | ✅ |
-| Virtual camera "Share screen (game mode)" | — | ✅ |
-| In-game voice / POV overlays | — | ✅ |
-| Controller push-to-talk and mute shortcut | — | ✅ |
-| Keep the screen awake while watching a stream | — | ✅ |
+| Game audio in the call, game ↔ Discord mix | No | ✅ |
+| Choosing audio output / input inside the plugin | No (uses the Windows default devices) | ✅ |
+| Virtual camera "Share screen (game mode)" | No | ✅ |
+| In-game voice / POV overlays | No | ✅ |
+| Controller push-to-talk and mute shortcut | No | ✅ |
+| Keep the screen awake while watching a stream | No | ✅ |
 
 Controls that cannot work on the current host are hidden automatically.
 
