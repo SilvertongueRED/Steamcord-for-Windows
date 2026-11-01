@@ -744,7 +744,13 @@ class Plugin:
                                    "— retrying in 15s")
                     await sleep(15)
                 else:
-                    logger.warning(f"initialize() failed ({e!r}); retrying in 2s")
+                    # Short message only: the repr of a decode error carries the
+                    # whole injected script (~250 KB) and, every 2 s, filled the
+                    # log with hundreds of MB on Windows.
+                    msg = repr(e)
+                    if len(msg) > 400:
+                        msg = msg[:400] + "...(truncated)"
+                    logger.warning(f"initialize() failed ({msg}); retrying in 2s")
                     await sleep(2)
         logger.info("Discord initialized")
 

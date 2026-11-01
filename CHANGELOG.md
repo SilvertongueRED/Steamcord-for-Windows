@@ -1,5 +1,27 @@
 # Changelog
 
+## 1.43.2 - 2026-11-01
+
+### Fixed
+
+- **Windows: log flood.** The `initialize() failed` retry message is cut to 400 characters.
+  It used to carry the whole injected script every 2 seconds, which grew the 1.43.0 log on
+  Windows to hundreds of MB.
+- The Steam Deck-only helpers (`game_overlay/overlay.py`, `gst_webrtc.py`, `input_watch.py`,
+  `portal_shim.py`) also name UTF-8 on every text file access now.
+
+### Tests
+
+- `TextEncodingTest` covers every backend file (the skip list is gone), checks that the
+  injected scripts are valid UTF-8, and that the start-up retry log line stays bounded.
+
+### Status
+
+- Windows tested on a Windows 11 PC in Steam Big Picture: QR login and voice chat work.
+
+**Full changelog:** [v1.43.1...v1.43.2](https://github.com/SilvertongueRED/Steamcord-for-Windows/compare/v1.43.1...v1.43.2)
+
+
 ## 1.43.1 - 2026-11-01
 
 ### Fixed

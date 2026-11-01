@@ -271,15 +271,11 @@ class TextEncodingTest(unittest.TestCase):
     steamcord_client.js), so every text-mode open / read_text / write_text must name
     its encoding."""
 
-    SKIP = ("gst_camera.py", "gst_webrtc.py", "portal_shim.py", "input_watch.py")
-
     def _files(self):
-        out = [ROOT / "main.py"]
-        for path in sorted(DEFAULTS.rglob("*.py")):
-            if path.name in self.SKIP or "game_overlay" in path.parts:
-                continue
-            out.append(path)
-        return out
+        # Every backend file, the Steam Deck-only helpers included: one bare open()
+        # is all it takes, and a skip list goes stale as code moves around.
+        return [ROOT / "main.py"] + sorted(
+            p for p in DEFAULTS.rglob("*.py") if "__pycache__" not in p.parts)
 
     @staticmethod
     def _binary_mode(call):
@@ -308,6 +304,16 @@ class TextEncodingTest(unittest.TestCase):
                 if not any(kw.arg == "encoding" for kw in node.keywords):
                     offenders.append(f"{path.relative_to(ROOT)}:{node.lineno}")
         self.assertEqual(offenders, [], "text-mode file access without encoding= (breaks on Windows)")
+
+    def test_injected_scripts_are_valid_utf8(self):
+        # The exact files that broke the first Windows start.
+        for name in ("steamcord_client.js", "webrtc_client.js"):
+            (DEFAULTS / name).read_bytes().decode("utf-8")
+
+    def test_startup_retry_log_line_is_bounded(self):
+        src = (ROOT / "main.py").read_text(encoding="utf-8")
+        self.assertNotIn('initialize() failed ({e!r})', src)
+        self.assertIn('"...(truncated)"', src)
 
 
 @unittest.skipUnless(sys.platform == "win32", "needs a real Windows host")

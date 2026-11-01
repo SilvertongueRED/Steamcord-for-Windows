@@ -86,6 +86,8 @@ Controls that cannot work on the current host are hidden automatically.
 ## Troubleshooting
 
 **Stuck on "Initializing…"**
+- 1.43.0 always stopped here on Windows (a text-encoding bug). Install **1.43.1 or newer**.
+- Just updated? Restart Steam so the plugin's backend starts fresh with the new files.
 - Check that Decky for Windows is running and Steam was restarted once after it was
   installed (Steam's debugger answers on `http://localhost:8080`).
 - Look at the Steamcord log in Decky's log folder (`%USERPROFILE%\homebrew\logs\Steamcord`

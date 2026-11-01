@@ -1,66 +1,38 @@
-## Steamcord 1.43.1 - Windows Big Picture support, same zip as the Steam Deck
+## Steamcord 1.43.2 - Windows fixes, now tested on a real PC
 
-**1.43.1 fixes a start-up bug on Windows.** In 1.43.0 the panel stayed on "Initializing" because Windows read Steamcord's UTF-8 files with the legacy code page and failed on startup, so Vesktop was never launched. All text file access now uses UTF-8, and a test guards against it coming back. The Steam Deck is unaffected. If you installed 1.43.0, install this one over it.
+**Steamcord now runs on Windows.** Since 1.43.1 the Windows build gets past
+"Initializing", and it has been tested on a Windows 11 PC in Steam Big Picture: QR login
+and voice chat work. The same zip still runs on the Steam Deck, which is unchanged.
 
-**One release, two hosts.** `Steamcord-for-Windows.zip` now runs on the Steam Deck
-(Decky Loader, Gaming Mode) **and** on Windows (Decky Loader for Windows, Steam Big
-Picture). The plugin detects the host when it starts - nothing to choose, nothing to
-configure.
+### Fixed
 
-### New: Windows
+- **Windows: no more giant Steamcord log.** When the Discord client failed to start, each
+  retry wrote the whole injected script (about 250 KB) into the log every 2 seconds. On
+  1.43.0 that grew the log to hundreds of MB in a few hours. The retry message is now short.
+- **UTF-8 everywhere.** The Steam Deck-only helpers (overlay, Go Live relay, controller
+  watcher, screen-cast shim) now also read and write their files as UTF-8, like the rest of
+  the backend since 1.43.1.
 
-- **Discord in Steam Big Picture on Windows 10 / 11.** Voice chat, DMs and group DMs,
-  servers and text chat, QR login and the CAPTCHA solver, Steam-toast notifications,
-  soundboard, Rich Presence and per-user volume are supported in the Quick Access Menu, driven by
-  a real Vesktop just like on the Deck. **These are built and unit-tested but not yet confirmed on real
-  Windows hardware.**
-- **Vesktop is installed for you** (winget, or the official installer, silently and
-  per-user - no administrator prompt) and started minimised on its own profile. A
-  Vesktop you already use on the desktop is never touched.
-- **One Discord per Steam account** on Windows too, with the same automatic switching.
-- **Go Live on Windows** shares the primary display through Electron's own screen
-  capture (video only for now).
-- The QAM hides what a platform cannot do, so Windows users never see PipeWire audio
-  routing, the virtual camera, in-game overlays or the evdev controller shortcut.
+### Tests
 
-### Unchanged on the Steam Deck
+- The UTF-8 check now covers every backend file, with no skip list.
+- New checks that the injected scripts are valid UTF-8 and that the start-up retry log line
+  stays short.
 
-Every Linux code path is kept as it was; the Windows logic sits behind a platform check.
-The whole existing test suite still passes.
+### Install / upgrade
 
-### Windows limitations (first release)
-
-No game-audio sharing or game ↔ Discord mix, no in-plugin audio device picker (Vesktop
-uses the Windows default devices), no virtual camera mode, no in-game overlays, no
-controller push-to-talk, no keep-awake. Details and troubleshooting:
-[docs/WINDOWS.md](docs/WINDOWS.md).
-
-> The Windows port is new and has had limited time on real handhelds. Please report
-> what you find.
-
-### Install
-
-- **Steam Deck / Linux:** Decky → Developer → *Install from URL* →
+- **Windows:** in Big Picture, Decky -> Developer -> *Install Plugin from URL*:
   `https://github.com/SilvertongueRED/Steamcord-for-Windows/releases/latest/download/Steamcord-for-Windows.zip`
-- **Windows:** install [Decky Loader for Windows](https://github.com/musika08/decky-loader-windows)
-  (3.3+), then Decky → Developer → *Install Plugin from URL* (same link) or
-  *Install Plugin from ZIP File*.
+  (or *Install Plugin from ZIP File*). If the panel still says "Initializing" after
+  updating, restart Steam so the plugin starts fresh.
+- **Coming from 1.43.0 on Windows:** you can delete the old, very large log in
+  `%USERPROFILE%\homebrew\logs\Steamcord`.
+- **Steam Deck / Linux:** Decky -> Developer -> *Install from URL* (same link). No
+  behaviour change.
 
-### Upgrading
+Windows requirements, what works on each host and troubleshooting:
+[docs/WINDOWS.md](https://github.com/SilvertongueRED/Steamcord-for-Windows/blob/main/docs/WINDOWS.md).
 
-- This release adds files at the plugin's top level (`sc_platform.py`,
-  `vesktop_windows.py`), so install it the normal way (URL or ZIP above) - the built-in
-  updater can overwrite files but not create new ones.
-- The in-plugin update check now follows **this fork's** releases instead of the
-  upstream Steamcord ones, so an upstream Linux-only build can no longer replace the
-  Windows-capable one.
-
-### Under the hood
-
-- `defaults/sc_platform.py` (host, paths, feature flags) and `defaults/vesktop_windows.py`
-  (find / install / launch / stop Vesktop on Windows); `Plugin.get_platform_caps` and
-  `src/platform.ts` carry the feature flags to the UI.
-- CI: a Windows job runs the platform tests on a real Windows runner, and the release
-  fails if the built zip is missing either the Steam Deck files or the Windows layer.
+**Full changelog:** [v1.43.1...v1.43.2](https://github.com/SilvertongueRED/Steamcord-for-Windows/compare/v1.43.1...v1.43.2)
 
 Based on [Steamcord](https://github.com/Necrosiak/Steamcord) by Necrosiak (BSD-3-Clause).
