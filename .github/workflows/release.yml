@@ -108,6 +108,12 @@ jobs:
       - name: Build plugin ZIP
         run: |
           $(pwd)/cli/decky plugin build $(pwd)
+          # The Decky CLI names the zip after the plugin, not the repository: give it
+          # the repository's name so the download URL in the docs stays stable.
+          ZIP=$(ls out/*.zip | head -n 1)
+          TARGET="out/${{ github.event.repository.name }}.zip"
+          [ "$ZIP" = "$TARGET" ] || mv "$ZIP" "$TARGET"
+          ls -la out
 
       - name: Check the ZIP serves both the Steam Deck and Windows
         run: |
